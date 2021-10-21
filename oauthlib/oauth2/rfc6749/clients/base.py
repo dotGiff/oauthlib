@@ -513,7 +513,10 @@ class Client:
             self._expires_at = time.time() + int(self.expires_in)
 
         if 'expires_at' in response:
-            self._expires_at = int(response.get('expires_at'))
+            if isinstance(response.get('expires_at'), int) or (
+                    isinstance(response.get('expires_at'), str) and response.get('expires_at').isdigit()
+            ):
+                self._expires_at = int(response.get('expires_at'))
 
         if 'mac_key' in response:
             self.mac_key = response.get('mac_key')
